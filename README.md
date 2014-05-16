@@ -21,3 +21,4 @@ __TODO__
 * Proper Readme with sample code
 * Create Demo
 * Proper Documentation
+* Remove ReactiveCocoa dependency
