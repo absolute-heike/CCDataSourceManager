@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "CCDataSourceManager"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "Drop In DataSource Manager for Table- and CollectionView. Register Cells for certain model classes"
 
   s.description  = <<-DESC
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.platform     = :ios, "6.0"
 
-  s.source       = { :git => "https://github.com/absolute-heike/CCDataSourceManager.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/absolute-heike/CCDataSourceManager.git", :tag => "0.0.2" }
 
 
   s.source_files  = "CCDataSourceManager", "CCDataSourceManager/**/*.{h,m}"
