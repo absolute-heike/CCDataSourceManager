@@ -7,6 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "CCDataSourceManager.h"
+
 
 @interface CCDataSourceManagerTests : XCTestCase
 

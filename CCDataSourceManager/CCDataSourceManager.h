@@ -11,15 +11,18 @@
 
 
 typedef void (^CCDataSourceManagerCellSetupBlock)(id cell, id data, NSIndexPath *indexPath);
+typedef NSString *(^CCDatasourceManagerReuseIdentifierForDataBlock)(id data, NSIndexPath *indexPath);
+
 
 @protocol CCDataSourceManagerDelegate;
 
 @interface CCDataSourceManager : NSObject
 
-@property (nonatomic, strong) NSArray *data;
-@property (nonatomic, weak) id<CCDataSourceManagerDelegate> delegate;
-@property BOOL editable;
-@property BOOL shouldAutoReloadOnDataSourceChange;
+@property (nonatomic, strong)   NSArray *data;
+@property (nonatomic, weak)     id<CCDataSourceManagerDelegate> delegate;
+@property                       BOOL editable;
+@property                       BOOL shouldAutoReloadOnDataSourceChange;
+@property (nonatomic, copy)     CCDatasourceManagerReuseIdentifierForDataBlock reuseIdentifierForDataBlock;
 
 
 + (instancetype)managerForTableView:(UITableView *)tableView;
@@ -34,6 +37,8 @@ typedef void (^CCDataSourceManagerCellSetupBlock)(id cell, id data, NSIndexPath 
 - (void)registerCellReuseIdentifier:(NSString *)reuseIdentifier forDataObjects:(NSArray *)classes setupBlock:(CCDataSourceManagerCellSetupBlock)setupBlock;
 
 - (id)dataForIndexPath:(NSIndexPath *)indexPath;
+
+-(void)setReuseIdentifierForDataBlock:(CCDatasourceManagerReuseIdentifierForDataBlock)reuseIdentifierForDataBlock;
 
 @end
 

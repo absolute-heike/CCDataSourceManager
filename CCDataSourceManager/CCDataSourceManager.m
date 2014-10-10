@@ -21,7 +21,6 @@
 
 @implementation CCDataSourceManager
 
-
 + (instancetype)managerForTableView:(UITableView *)tableView {
     CCDataSourceManager *manager = [[CCDataSourceManager alloc] init];
     
@@ -62,6 +61,18 @@
         }];
     }
     return self;
+}
+
+- (NSString *)reuseIdentfierForIndexPath:(NSIndexPath *)indexPath data:(NSObject *)data classString:(NSString *)classString {
+    if (self.reuseIdentifierForDataBlock) {
+        NSString *reuseIdentifier = self.reuseIdentifierForDataBlock([self dataForIndexPath:indexPath], indexPath);
+        
+        if (reuseIdentifier) {
+            return reuseIdentifier;
+        }
+    }
+    
+    return [self.reuseIdentifiers objectForKey:classString];
 }
 
 - (void)registerNib:(UINib *)nib forCellReuseIdentifier:(NSString *)reuseIdentifier forDataObject:(Class)classType setupBlock:(CCDataSourceManagerCellSetupBlock)setupBlock {
@@ -105,6 +116,22 @@
     return [self.data[indexPath.section] objectAtIndex:indexPath.row];
 }
 
+- (NSString *)correctedClassStringForObject:(NSObject *)object {
+    NSString *classString = nil;
+    
+    if([object isKindOfClass:[NSArray class]]){
+        classString = NSStringFromClass([NSArray class]);
+    }else if ([object isKindOfClass:[NSString class]]){
+        classString = NSStringFromClass([NSString class]);
+    }else if ([object isKindOfClass:[NSDate class]]){
+        classString = NSStringFromClass([NSDate class]);
+    }else{
+        classString = NSStringFromClass([object class]);
+    }
+    
+    return classString;
+}
+
 
 #pragma mark - Table View DataSource
 
@@ -118,9 +145,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSObject *data          = [self dataForIndexPath:indexPath];
-    NSString *classString   = NSStringFromClass(data.class);
+    NSString *classString   = [self correctedClassStringForObject:data];
     
-    NSString *reuseIdentifier   = [self.reuseIdentifiers objectForKey:classString];
+    NSString *reuseIdentifier   = [self reuseIdentfierForIndexPath:indexPath data:data classString:classString];
     NSAssert(reuseIdentifier, @"No Cell registered for class with Name: %@",classString);
     
     UITableViewCell *cell       = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
@@ -172,9 +199,9 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSObject *data          = [self dataForIndexPath:indexPath];
-    NSString *classString   = NSStringFromClass(data.class);
+    NSString *classString   = [self correctedClassStringForObject:data];
     
-    NSString *reuseIdentifier   = [self.reuseIdentifiers objectForKey:classString];
+    NSString *reuseIdentifier   = [self reuseIdentfierForIndexPath:indexPath data:data classString:classString];
     NSAssert(reuseIdentifier, @"No Cell registered for class with Name: %@",classString);
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
