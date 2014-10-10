@@ -12,7 +12,7 @@ __Features__
 __Installation__
 
 ```
-pod 'CCDataSourceManager', :git => 'https://github.com/absolute-heike/CCDataSourceManager'
+pod 'CCDataSourceManager', :git => 'https://github.com/absolute-heike/CCDataSourceManager', :tag => '0.0.1'
 ```
 
 
